@@ -39,7 +39,20 @@ public class Room {
         return people;
     }
 
+    public void addPerson(Person person) {
+        people.add(person);
+        if (person.getCurrentRoom() != null) {
+            person.getCurrentRoom().getPeople().remove(person); // when adding a person to a new room, remove person from old room
+        }
+        person.setCurrentRoom(this);
+    }
+
+
+    // The distance between rooms needs to be measured and not the length of a
+    // room, because for situations like with hallways, the length of the hallway is useless.
+    // What we need is the distance between rooms in the hallway.
     public static class AdjacentRoomDistance {
+
         private Room room1;
         private Room room2;
         private int distance;
@@ -61,6 +74,7 @@ public class Room {
         public int getDistance() {
             return distance;
         }
+
     }
 
 }

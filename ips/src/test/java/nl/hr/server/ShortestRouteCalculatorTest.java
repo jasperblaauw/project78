@@ -3,13 +3,16 @@ package nl.hr.server;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import static nl.hr.server.Person.Type.*;
+import static nl.hr.server.Direction.*;
+import static nl.hr.server.Person.Type.ELDERLY;
+import static nl.hr.server.Person.Type.NURSE;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
-public class ShortestRouteCalculatorUTest {
+public class ShortestRouteCalculatorTest {
 
     private Map<String, Room> rooms;
     private Room room1;
@@ -19,7 +22,7 @@ public class ShortestRouteCalculatorUTest {
     private RouteCalculator routeCalculator;
 
     @Before
-    public void init() {
+    public void setup() {
         room1 = new Room(1, "room1");
         room2 = new Room(2, "room2");
         room3 = new Room(3, "room3");
@@ -41,41 +44,51 @@ public class ShortestRouteCalculatorUTest {
         routeCalculator = new RouteCalculator(rooms);
     }
 
-    // It has to be that the distance between rooms is measured and not the length of a
-    // room, because for situations like with hallway, the length of the hallway is useless.
-    // What I need is the distance between rooms in the hallway.
-
     @Test
-    public void checkRoomHasAdjacentRoom() {
+    public void roomHasAdjacentRoom() {
         assertThat(room1.getAdjacentRooms().size(), is(1));
         assertThat(room2.getAdjacentRooms().size(), is(2));
     }
 
     @Test
-    public void checkRoomHasAdjacentRoomByName() {
+    public void roomHasAdjacentRoomByName() {
         assertThat(room1.getAdjacentRooms().get("room2"), is(room2));
     }
 
     @Test
-    public void checkFindAllNursesRoom1() {
+    public void findAllNursesRoom1() {
         Person nurse = new Person(1, NURSE);
-        room1.getPeople().add(nurse);
+        room1.addPerson(nurse);
 
         assertThat(routeCalculator.findAllNurses(), hasItem(nurse));
     }
 
     @Test
-    public void checkFindAllNursesRoom1AndRoom2() {
+    public void findAllNurses() {
         Person nurse1 = new Person(1, NURSE);
         Person nurse2 = new Person(2, NURSE);
-        room1.getPeople().add(nurse1);
-        room2.getPeople().add(nurse2);
+        room1.addPerson(nurse1);
+        room2.addPerson(nurse2);
 
         assertThat(routeCalculator.findAllNurses(), hasItems(nurse1, nurse2));
     }
 
     @Test
-    public void checkElderlyRoom1FindNurseRoom3() {
+    public void findClosestNurse_ElderlyRoom1() {
+        Person elderly = new Person(1, ELDERLY);
+        Person nurse1 = new Person(2, NURSE);
+        Person nurse2 = new Person(3, NURSE);
+
+        room1.addPerson(elderly);
+        room2.addPerson(nurse1);
+        room3.addPerson(nurse2);
+
+        assertThat(routeCalculator.findClosestNurseFor(elderly.getCurrentRoom()), is(nurse1));
+        assertThat(nurse1.getCurrentRoom(), is(room2));
+    }
+
+    @Test
+    public void findClosestNurse_ElderlyRoom1AndNurseInAdjacentAdjacentRoom() {
         Person elderly = new Person(1, ELDERLY);
         Person nurse1 = new Person(2, NURSE);
         Person nurse2 = new Person(3, NURSE);
@@ -89,19 +102,27 @@ public class ShortestRouteCalculatorUTest {
 
         rooms.put("room4", room4);
 
-        room1.getPeople().add(elderly);
-        room3.getPeople().add(nurse1);
-        room4.getPeople().add(nurse2);
+        room1.addPerson(elderly);
+        room3.addPerson(nurse1);
+        room4.addPerson(nurse2);
 
-        assertThat(routeCalculator.findClosestNurseFor(elderly, room1), hasItems(nurse1));
+        assertThat(routeCalculator.findClosestNurseFor(elderly.getCurrentRoom()), is(nurse1));
+        assertThat(nurse1.getCurrentRoom(), is(room3));
     }
-//
-//    @Test
-//    public void checkConnection() {
-//        Integer id = 99; // id for elderly.
-//        Room roomId = 2;
-//
-//
-//    }
+
+    @Test
+    public void calculateRouteClosestNurseElderlyRoom1NurseRoom3() {
+        Person elderly = new Person(1, ELDERLY);
+        Person nurse = new Person(2, NURSE);
+
+        room1.addPerson(elderly);
+        room2.addPerson(nurse);
+
+        assertThat(routeCalculator.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItem(NORTH));
+
+        room3.addPerson(nurse);
+
+        assertThat(routeCalculator.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItems(NORTH, SOUTH));
+    }
 
 }

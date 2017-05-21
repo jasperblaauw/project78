@@ -4,6 +4,9 @@ public class Person {
 
     private Integer id;
     private Type type;
+    private Room currentRoom; // Room object sets this variable (when a person enters a room)
+    // otherwise you need to set this variable manually.
+
     // Later, maybe add status (for when a nurse is busy or available)
 
     public Person(Integer id, Type type) {
@@ -19,8 +22,12 @@ public class Person {
         return type;
     }
 
-    public enum Type {
-        NURSE, ELDERLY
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
     }
 
     @Override
@@ -29,6 +36,10 @@ public class Person {
                 "id=" + id +
                 ", type=" + type +
                 '}';
+    }
+
+    public enum Type {
+        NURSE, ELDERLY
     }
 
 }

@@ -1,0 +1,5 @@
+Chokepoints --> Server: Chokepoints versturen de ID van de gebruikers terug, zodat de server weet van waar een persoon komt en naartoe gaat.
+
+Armband --> Server: Armband vraagt de richting waar de gebruiker heen moet, zodat de gebruiker naar de juiste verzorger naartoe kan).
+
+Armband verstuurt misschien ook de ricthing van waar de gebruiker vandaan komt, zodat de server niet intern na moet gaan, waar de gebruiker laatst was en door welke chokepoint hij heen was.

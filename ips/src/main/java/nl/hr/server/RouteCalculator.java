@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static nl.hr.server.Person.Type.*;
+import static nl.hr.server.Person.Type.NURSE;
 
 public class RouteCalculator {
 
@@ -17,36 +17,50 @@ public class RouteCalculator {
     public List<Person> findAllNurses() {
         List<Person> nurses = new ArrayList<>();
 
-         rooms.forEach((name, room) -> room.getPeople().stream()
-                                 .filter(person -> person.getType() == NURSE)
-                                 .forEach(nurses::add));
+        rooms.forEach((name, room) -> room.getPeople().stream()
+                .filter(person -> person.getType() == NURSE)
+                .forEach(nurses::add));
 
-         return nurses;
+        return nurses;
     }
 
-    // Should I search real oop, like a room has a person, and work via that
-    // , or bi directional, that a person also has a room?
+    // Should rooms have people, and work via that, or
+    // bi directional, that a person also has a currentRoom?
+    // Answer: I made it bidirectional. The room will automatically set the current
+    // room the person is in.
 
-    public List<Person> findClosestNurseFor(Person elderly, Room room) {
+    // Bidirectional is necessary because if you get a person, you want to know immediately where
+    // he or she is.
+
+    public Person findClosestNurseFor(Room room) {
         List<Person> nursesInAdjacentRooms = new ArrayList<>();
 
         room.getAdjacentRooms()
                 .forEach((name, adjacentRoom) -> adjacentRoom.getPeople().stream()
-                .filter(person -> person.getType() == NURSE)
-                .forEach(nursesInAdjacentRooms::add));
+                        .filter(person -> person.getType() == NURSE)
+                        .forEach(nursesInAdjacentRooms::add));
 
         if (nursesInAdjacentRooms.size() > 0) {
-            return nursesInAdjacentRooms;
+            return nursesInAdjacentRooms.get(0);
         } else {
             Map<String, Room> rooms = room.getAdjacentRooms();
             for (Room adjacentRoom : rooms.values()) {
-                List<Person> nursesInAdjacentAdjacentRoom =  findClosestNurseFor(elderly, adjacentRoom);
-                if (nursesInAdjacentAdjacentRoom.size() > 0) {
-                    return nursesInAdjacentAdjacentRoom;
+                Person nurseInAdjacentAdjacentRoom = findClosestNurseFor(adjacentRoom);
+                if (nurseInAdjacentAdjacentRoom != null) {
+                    return nurseInAdjacentAdjacentRoom;
                 }
             }
             return null;
         }
+    }
+
+    public List<Direction> calculateRouteClosestNurse(Room room) {
+        List<Direction> directions = new ArrayList<>();
+
+        Person closestNurse = findClosestNurseFor(room);
+//        closestNurse.get
+
+        return directions;
     }
 
 }
