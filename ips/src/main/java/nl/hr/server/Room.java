@@ -8,6 +8,7 @@ import java.util.Map;
 public class Room {
 
     private Map<String, Room> adjacentRooms = new HashMap<>();
+    private Map<Room, Direction> adjacentRoomDirection = new HashMap<>();
     private List<AdjacentRoomDistance> adjacentRoomsDistances = new ArrayList<>();
     private List<Person> people = new ArrayList<>();
 
@@ -29,6 +30,10 @@ public class Room {
 
     public Map<String, Room> getAdjacentRooms() {
         return adjacentRooms;
+    }
+
+    public Map<Room, Direction> getAdjacentRoomDirection() {
+        return adjacentRoomDirection;
     }
 
     public List<AdjacentRoomDistance> getAdjacentRoomsDistances() {

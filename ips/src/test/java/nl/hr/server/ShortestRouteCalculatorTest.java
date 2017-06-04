@@ -30,6 +30,12 @@ public class ShortestRouteCalculatorTest {
         room1.getAdjacentRooms().put("room2", room2);
         room2.getAdjacentRooms().put("room1", room1);
 
+        room1.getAdjacentRoomDirection().put(room2, NORTH);
+        room2.getAdjacentRoomDirection().put(room1, SOUTH);
+
+        room2.getAdjacentRoomDirection().put(room3, WEST);
+        room3.getAdjacentRoomDirection().put(room2, EAST);
+
         room2.getAdjacentRooms().put("room3", room3);
         room3.getAdjacentRooms().put("room2", room2);
 
@@ -122,7 +128,7 @@ public class ShortestRouteCalculatorTest {
 
         room3.addPerson(nurse);
 
-        assertThat(routeCalculator.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItems(NORTH, SOUTH));
+        assertThat(routeCalculator.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItems(NORTH, EAST));
     }
 
 }

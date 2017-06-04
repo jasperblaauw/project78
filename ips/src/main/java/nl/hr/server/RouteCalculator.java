@@ -55,10 +55,24 @@ public class RouteCalculator {
     }
 
     public List<Direction> calculateRouteClosestNurse(Room room) {
+        Person closestNurse = findClosestNurseFor(room);
+        Room roomNurse = closestNurse.getCurrentRoom();
+
+        return roomToRoomDirection(room, roomNurse);
+    }
+
+
+    // Stuck here. How do I get all the rooms between room1 and room2?
+    // I definitely need recursion and save all the rooms.
+    public List<Direction> roomToRoomDirection(Room room1, Room room2) {
         List<Direction> directions = new ArrayList<>();
 
-        Person closestNurse = findClosestNurseFor(room);
-//        closestNurse.get
+        room1.getAdjacentRooms().get(room2);
+
+        Direction direction = room1.getAdjacentRoomDirection().get(room2);
+        if (direction != null) {
+            directions.add(direction);
+        }
 
         return directions;
     }
