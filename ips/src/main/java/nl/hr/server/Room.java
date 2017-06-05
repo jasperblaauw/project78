@@ -52,7 +52,6 @@ public class Room {
         person.setCurrentRoom(this);
     }
 
-
     // The distance between rooms needs to be measured and not the length of a
     // room, because for situations like with hallways, the length of the hallway is useless.
     // What we need is the distance between rooms in the hallway.

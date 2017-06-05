@@ -61,9 +61,6 @@ public class RouteCalculator {
         return roomToRoomDirection(room, roomNurse);
     }
 
-
-    // Stuck here. How do I get all the rooms between room1 and room2?
-    // I definitely need recursion and save all the rooms.
     public List<Direction> roomToRoomDirection(Room room1, Room room2) {
         List<Direction> directions = new ArrayList<>();
 
@@ -71,9 +68,20 @@ public class RouteCalculator {
 
         Direction direction = room1.getAdjacentRoomDirection().get(room2);
         if (direction != null) {
+            System.out.println("inside if for loop");
             directions.add(direction);
+        } else {
+            System.out.println("inside else");
+            for (Room adjacentRoom : room1.getAdjacentRooms().values()) {
+                direction = room1.getAdjacentRoomDirection().get(adjacentRoom);
+                directions.add(direction);
+
+                System.out.println("inside else for loop");
+                directions.addAll(roomToRoomDirection(adjacentRoom, room2));
+            }
         }
 
+        System.out.println("end of line");
         return directions;
     }
 

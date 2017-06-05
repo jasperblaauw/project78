@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static nl.hr.server.Direction.*;
@@ -12,7 +13,7 @@ import static nl.hr.server.Person.Type.NURSE;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
-public class ShortestRouteCalculatorTest {
+public class RouteCalculatorTest {
 
     private Map<String, Room> rooms;
     private Room room1;
@@ -129,6 +130,21 @@ public class ShortestRouteCalculatorTest {
         room3.addPerson(nurse);
 
         assertThat(routeCalculator.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItems(NORTH, EAST));
+    }
+
+    @Test
+    public void calculateDirectionRoomToAdjacentRoom() {
+        List<Direction> directions = routeCalculator.roomToRoomDirection(room1, room2);
+
+        assertThat(directions.get(0), is(NORTH));
+    }
+
+    @Test
+    public void calculateDirectionRoomToAdjacentOfAdjacentRoom() {
+        List<Direction> directions = routeCalculator.roomToRoomDirection(room1, room3);
+
+        assertThat(directions.get(0), is(NORTH)); // Hij gaat eerst naar room2 via NORTH
+        assertThat(directions.get(1), is(WEST)); // Hij gaat van room2 naar room 3 via WEST
     }
 
 }
