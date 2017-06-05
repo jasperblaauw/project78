@@ -1,10 +1,11 @@
-package nl.hr.server;
+package nl.hr.core;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static nl.hr.server.Direction.*;
-import static nl.hr.server.Person.Type.NURSE;
+import static nl.hr.core.Direction.NORTH;
+import static nl.hr.core.Direction.SOUTH;
+import static nl.hr.core.Person.Type.NURSE;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,10 +13,9 @@ import static org.hamcrest.core.IsNot.not;
 
 public class RoomTest {
 
+    private Person nurse;
     private Room room1;
     private Room room2;
-    Person nurse;
-
 
     @Before
     public void setup() {

@@ -1,4 +1,4 @@
-package nl.hr.server;
+package nl.hr.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ public class Room {
     private Map<Room, Direction> adjacentRoomDirection = new HashMap<>();
     private List<AdjacentRoomDistance> adjacentRoomsDistances = new ArrayList<>();
     private List<Person> people = new ArrayList<>();
+    private List<Integer> chokePointIds = new ArrayList<>();
 
     private Integer id;
     private String name;
@@ -50,6 +51,10 @@ public class Room {
             person.getCurrentRoom().getPeople().remove(person); // when adding a person to a new room, remove person from old room
         }
         person.setCurrentRoom(this);
+    }
+
+    public List<Integer> getChokePointIds() {
+        return chokePointIds;
     }
 
     // The distance between rooms needs to be measured and not the length of a

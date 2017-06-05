@@ -1,4 +1,4 @@
-package nl.hr.server;
+package nl.hr.core;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static nl.hr.server.Direction.*;
-import static nl.hr.server.Person.Type.ELDERLY;
-import static nl.hr.server.Person.Type.NURSE;
+import static nl.hr.core.Direction.*;
+import static nl.hr.core.Person.Type.ELDERLY;
+import static nl.hr.core.Person.Type.NURSE;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 

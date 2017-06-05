@@ -1,4 +1,4 @@
-package nl.hr.server;
+package nl.hr.core;
 
 public class Person {
 

@@ -1,10 +1,10 @@
-package nl.hr.server;
+package nl.hr.core;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static nl.hr.server.Person.Type.NURSE;
+import static nl.hr.core.Person.Type.NURSE;
 
 public class RouteCalculator {
 
