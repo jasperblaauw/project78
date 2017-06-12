@@ -8,14 +8,7 @@ import java.util.Map;
 //@Service
 public class PersonMoverService {
 
-    private Map<Integer, Person> people;
-
-    public PersonMoverService(Map<Integer, Person> people) {
-        this.people = people;
-    }
-
-    public void movePerson(int chokePointId, int personId) {
-        Person person = people.get(personId);
+    public void movePerson(int chokePointId, Person person) {
         Room previousRoom = person.getCurrentRoom();
 
         Map<String, Room> adjacentRooms = previousRoom.getAdjacentRooms();

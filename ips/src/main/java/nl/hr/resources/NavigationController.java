@@ -6,8 +6,12 @@ import nl.hr.core.Person;
 import nl.hr.core.Room;
 import nl.hr.service.PersonMoverService;
 import nl.hr.service.RouteCalculatorService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,26 +20,34 @@ public class NavigationController {
 
     private final Map<Integer, Person> people = Building.getPeople();
     private final Map<String, Room> rooms = Building.getRooms();
-    // I wont use DI, because I dont think I will test this class. We will just manual test it.
-    private PersonMoverService personMoverService = new PersonMoverService(people);
-    private RouteCalculatorService routeCalculatorService = new RouteCalculatorService(rooms);
+    // I wont use DI, because I don't think I will test this class. We will just manual test it.
+    private PersonMoverService personMoverService = new PersonMoverService();
+    private RouteCalculatorService routeCalculatorService = new RouteCalculatorService();
 
     // for testing
-    @RequestMapping()
-    public String test(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return "Hello " + name + "!";
+    @GetMapping("/rooms")
+    public Map<String, Room> getPeopleInEachRoom() {
+        return rooms;
     }
 
-    // Example http://localhost:8080/people/1/passedThrough/chokePoints/1?status=finished
-    @GetMapping("/people/{personId}/passedThrough/chokePoints/{chokePointId}?")
+    // for testing
+    @GetMapping("/rooms/{roomName}/people")
+    public List<Person> getPeopleInRoom(@PathVariable(value = "roomName") String roomName) {
+        return rooms.get(roomName).getPeople();
+    }
+
+    // Example http://localhost:8080/people/1/passedThrough/chokePoints/1000
+    @GetMapping("/people/{personId}/passedThrough/chokePoints/{chokePointId}")
     public void receiveChokePointData(@PathVariable(value = "chokePointId") int chokePointId,
                                       @PathVariable(value = "personId") int personId) {
         if (people.containsKey(personId)) { // just a check otherwise nullPointer
             // with the chokePoint id, and the room the person was previously in
             // I can determine which room the person is going to.
-            personMoverService.movePerson(chokePointId, personId);
 
             Person person = people.get(personId);
+
+            personMoverService.movePerson(chokePointId, person);
+
             if (person.isNavigating()) {
                 if (person.getRoomToNavigateTo() == person.getCurrentRoom()) {
                     person.setNavigating(false);

@@ -1,10 +1,13 @@
 package nl.hr.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonIgnoreProperties({"adjacentRooms", "adjacentRoomDirection", "adjacentRoomsDistances"})
 public class Room {
 
     private Map<String, Room> adjacentRooms = new HashMap<>();

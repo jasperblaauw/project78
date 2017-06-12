@@ -49,7 +49,7 @@ public class RouteCalculatorTest {
         rooms.put("room2", room2);
         rooms.put("room3", room3);
 
-        routeCalculatorService = new RouteCalculatorService(rooms);
+        routeCalculatorService = new RouteCalculatorService();
     }
 
     @Test
@@ -68,7 +68,7 @@ public class RouteCalculatorTest {
         Person nurse = new Person(1, NURSE);
         room1.addPerson(nurse);
 
-        assertThat(routeCalculatorService.findAllNurses(), hasItem(nurse));
+        assertThat(routeCalculatorService.findAllNurses(rooms), hasItem(nurse));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class RouteCalculatorTest {
         room1.addPerson(nurse1);
         room2.addPerson(nurse2);
 
-        assertThat(routeCalculatorService.findAllNurses(), hasItems(nurse1, nurse2));
+        assertThat(routeCalculatorService.findAllNurses(rooms), hasItems(nurse1, nurse2));
     }
 
     @Test

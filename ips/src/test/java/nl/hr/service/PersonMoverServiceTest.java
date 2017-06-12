@@ -5,9 +5,6 @@ import nl.hr.core.Room;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static nl.hr.core.Person.Type.ELDERLY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -36,16 +33,14 @@ public class PersonMoverServiceTest {
 
         room1.addPerson(person);
 
-        Map<Integer, Person> people = new HashMap<>();
-        people.put(1, person);
-        personMoverService = new PersonMoverService(people);
+        personMoverService = new PersonMoverService();
     }
 
     @Test
     public void movePerson() {
         assertThat(person.getCurrentRoom(), is(room1));
 
-        personMoverService.movePerson(1000, 1);
+        personMoverService.movePerson(1000, person);
 
         assertThat(person.getCurrentRoom(), is(room2));
     }

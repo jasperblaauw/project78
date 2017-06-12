@@ -12,13 +12,7 @@ import static nl.hr.core.Person.Type.NURSE;
 
 public class RouteCalculatorService {
 
-    private Map<String, Room> rooms;
-
-    public RouteCalculatorService(Map<String, Room> rooms) {
-        this.rooms = rooms;
-    }
-
-    public List<Person> findAllNurses() {
+    public List<Person> findAllNurses(Map<String, Room> rooms) {
         List<Person> nurses = new ArrayList<>();
 
         rooms.forEach((name, room) -> room.getPeople().stream()
