@@ -1,5 +1,6 @@
 package nl.hr.core;
 
+import nl.hr.service.RouteCalculatorService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,13 +21,13 @@ public class RouteCalculatorTest {
     private Room room2;
     private Room room3;
 
-    private RouteCalculator routeCalculator;
+    private RouteCalculatorService routeCalculatorService;
 
     @Before
     public void setup() {
-        room1 = new Room(1, "room1");
-        room2 = new Room(2, "room2");
-        room3 = new Room(3, "room3");
+        room1 = new Room(1);
+        room2 = new Room(2);
+        room3 = new Room(3);
 
         room1.getAdjacentRooms().put("room2", room2);
         room2.getAdjacentRooms().put("room1", room1);
@@ -48,7 +49,7 @@ public class RouteCalculatorTest {
         rooms.put("room2", room2);
         rooms.put("room3", room3);
 
-        routeCalculator = new RouteCalculator(rooms);
+        routeCalculatorService = new RouteCalculatorService(rooms);
     }
 
     @Test
@@ -67,7 +68,7 @@ public class RouteCalculatorTest {
         Person nurse = new Person(1, NURSE);
         room1.addPerson(nurse);
 
-        assertThat(routeCalculator.findAllNurses(), hasItem(nurse));
+        assertThat(routeCalculatorService.findAllNurses(), hasItem(nurse));
     }
 
     @Test
@@ -77,7 +78,7 @@ public class RouteCalculatorTest {
         room1.addPerson(nurse1);
         room2.addPerson(nurse2);
 
-        assertThat(routeCalculator.findAllNurses(), hasItems(nurse1, nurse2));
+        assertThat(routeCalculatorService.findAllNurses(), hasItems(nurse1, nurse2));
     }
 
     @Test
@@ -90,7 +91,7 @@ public class RouteCalculatorTest {
         room2.addPerson(nurse1);
         room3.addPerson(nurse2);
 
-        assertThat(routeCalculator.findClosestNurseFor(elderly.getCurrentRoom()), is(nurse1));
+        assertThat(routeCalculatorService.findClosestNurseFor(elderly.getCurrentRoom()), is(nurse1));
         assertThat(nurse1.getCurrentRoom(), is(room2));
     }
 
@@ -100,7 +101,7 @@ public class RouteCalculatorTest {
         Person nurse1 = new Person(2, NURSE);
         Person nurse2 = new Person(3, NURSE);
 
-        Room room4 = new Room(4, "room4");
+        Room room4 = new Room(4);
         room4.getAdjacentRooms().put("room3", room3);
         room3.getAdjacentRooms().put("room4", room4);
 
@@ -113,7 +114,7 @@ public class RouteCalculatorTest {
         room3.addPerson(nurse1);
         room4.addPerson(nurse2);
 
-        assertThat(routeCalculator.findClosestNurseFor(elderly.getCurrentRoom()), is(nurse1));
+        assertThat(routeCalculatorService.findClosestNurseFor(elderly.getCurrentRoom()), is(nurse1));
         assertThat(nurse1.getCurrentRoom(), is(room3));
     }
 
@@ -125,23 +126,23 @@ public class RouteCalculatorTest {
         room1.addPerson(elderly);
         room2.addPerson(nurse);
 
-        assertThat(routeCalculator.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItem(NORTH));
+        assertThat(routeCalculatorService.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItem(NORTH));
 
-        room3.addPerson(nurse);
+        room3.addPerson(nurse); // removes nurse from old rome
 
-        assertThat(routeCalculator.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItems(NORTH, EAST));
+        assertThat(routeCalculatorService.calculateRouteClosestNurse(elderly.getCurrentRoom()), hasItems(NORTH, WEST));
     }
 
     @Test
     public void calculateDirectionRoomToAdjacentRoom() {
-        List<Direction> directions = routeCalculator.roomToRoomDirection(room1, room2);
+        List<Direction> directions = routeCalculatorService.roomToRoomDirection(room1, room2);
 
         assertThat(directions.get(0), is(NORTH));
     }
 
     @Test
     public void calculateDirectionRoomToAdjacentOfAdjacentRoom() {
-        List<Direction> directions = routeCalculator.roomToRoomDirection(room1, room3);
+        List<Direction> directions = routeCalculatorService.roomToRoomDirection(room1, room3);
 
         assertThat(directions.get(0), is(NORTH)); // Hij gaat eerst naar room2 via NORTH
         assertThat(directions.get(1), is(WEST)); // Hij gaat van room2 naar room 3 via WEST

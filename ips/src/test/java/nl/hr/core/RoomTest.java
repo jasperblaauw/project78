@@ -19,8 +19,8 @@ public class RoomTest {
 
     @Before
     public void setup() {
-        room1 = new Room(1, "room1");
-        room2 = new Room(2, "room2");
+        room1 = new Room(1);
+        room2 = new Room(2);
 
         room1.getAdjacentRooms().put("room2", room2);
         room2.getAdjacentRooms().put("room1", room1);

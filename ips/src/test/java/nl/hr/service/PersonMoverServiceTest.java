@@ -12,9 +12,9 @@ import static nl.hr.core.Person.Type.ELDERLY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+//@Service
 public class PersonMoverServiceTest {
 
-//    @Autowired
     private PersonMoverService personMoverService;
 
     private Room room1;
@@ -25,8 +25,8 @@ public class PersonMoverServiceTest {
     public void setup() {
         person = new Person(1, ELDERLY);
 
-        room1 = new Room(111, "room1");
-        room2 = new Room(222, "room2");
+        room1 = new Room(111);
+        room2 = new Room(222);
 
         room1.getAdjacentRooms().put("room2", room2);
         room2.getAdjacentRooms().put("room1", room1);

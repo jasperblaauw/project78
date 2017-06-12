@@ -14,19 +14,13 @@ public class Room {
     private List<Integer> chokePointIds = new ArrayList<>();
 
     private Integer id;
-    private String name;
 
-    public Room(Integer id, String name) {
+    public Room(Integer id) {
         this.id = id;
-        this.name = name;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Map<String, Room> getAdjacentRooms() {

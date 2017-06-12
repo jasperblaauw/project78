@@ -2,16 +2,15 @@ package nl.hr.service;
 
 import nl.hr.core.Person;
 import nl.hr.core.Room;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service
+//@Service
 public class PersonMoverService {
 
-    private Map<Integer, Person> people; // Here you should set the room and people like in the test
+    private Map<Integer, Person> people;
 
-    PersonMoverService(Map<Integer, Person> people) {
+    public PersonMoverService(Map<Integer, Person> people) {
         this.people = people;
     }
 

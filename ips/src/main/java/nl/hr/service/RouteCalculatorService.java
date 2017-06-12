@@ -1,4 +1,8 @@
-package nl.hr.core;
+package nl.hr.service;
+
+import nl.hr.core.Direction;
+import nl.hr.core.Person;
+import nl.hr.core.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,11 +10,11 @@ import java.util.Map;
 
 import static nl.hr.core.Person.Type.NURSE;
 
-public class RouteCalculator {
+public class RouteCalculatorService {
 
     private Map<String, Room> rooms;
 
-    public RouteCalculator(Map<String, Room> rooms) {
+    public RouteCalculatorService(Map<String, Room> rooms) {
         this.rooms = rooms;
     }
 
