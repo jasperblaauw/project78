@@ -6,6 +6,8 @@ import nl.hr.core.Person;
 import nl.hr.core.Room;
 import nl.hr.service.PersonMoverService;
 import nl.hr.service.RouteCalculatorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("")
 public class NavigationController {
+
+    private static final Logger logger = LoggerFactory.getLogger(NavigationController.class);
 
     private final Map<Integer, Person> people = Building.getPeople();
     private final Map<String, Room> rooms = Building.getRooms();
@@ -61,7 +65,7 @@ public class NavigationController {
         }
     }
 
-    // Example: http://localhost:8080/people/1/navigateTo/room1?personId=1
+    // Example: http://localhost:8080/people/1/navigateTo/room3
     @GetMapping("/people/{personId}/navigateTo/{roomName}")
     public Direction getDirection(@PathVariable(value = "personId") int personId,
                                   @PathVariable(value = "roomName") String roomName) {
@@ -69,6 +73,11 @@ public class NavigationController {
             Person person = people.get(personId);
             person.setNavigating(true); // person only connects to this url to get directions
             // so navigation is always true
+            person.setCreateNewDirection(true);
+
+            logger.info("roomName and personId good");
+
+            person.setRoomToNavigateTo(rooms.get(roomName));
 
             if (person.isCreateNewDirection()) {
                 Direction direction = getDirectionForPerson(person);
@@ -77,10 +86,10 @@ public class NavigationController {
                 person.setCreateNewDirection(false);
             }
 
-            person.setRoomToNavigateTo(rooms.get(roomName));
-
             return person.getDirection();
         }
+
+        logger.info("sending nothing, because illegal input");
 
         return null; // if you pass illegal input
     }
@@ -88,6 +97,9 @@ public class NavigationController {
     private Direction getDirectionForPerson(Person person) {
         Room currentRoomPerson = person.getCurrentRoom();
         Room roomToNavigateTo = person.getRoomToNavigateTo();
+
+        logger.info(currentRoomPerson.toString());
+        logger.info(roomToNavigateTo.toString());
 
         // I return .get(0), because I want to return just 1 direction
         return routeCalculatorService.roomToRoomDirection(currentRoomPerson, roomToNavigateTo).get(0);

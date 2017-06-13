@@ -24,6 +24,9 @@ public class Building {
         room1.getChokePointIds().add(1000);
         room2.getChokePointIds().add(1000);
 
+        room2.getChokePointIds().add(2000);
+        room3.getChokePointIds().add(2000);
+
         room1.getAdjacentRoomDirection().put(room2, NORTH);
         room2.getAdjacentRoomDirection().put(room1, SOUTH);
 
@@ -33,6 +36,8 @@ public class Building {
         room2.getAdjacentRooms().put("room3", room3);
         room3.getAdjacentRooms().put("room2", room2);
 
+
+        // waarom doe ik dit weer?
         room2.getAdjacentRoomsDistances().add(
                 new Room.AdjacentRoomDistance(room1, room3, 40));
 

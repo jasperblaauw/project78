@@ -2,7 +2,7 @@ package nl.hr.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties("currentRoom")
+@JsonIgnoreProperties({"currentRoom", "roomToNavigateTo"})
 public class Person {
 
     private Integer id;

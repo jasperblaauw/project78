@@ -3,6 +3,8 @@ package nl.hr.service;
 import nl.hr.core.Direction;
 import nl.hr.core.Person;
 import nl.hr.core.Room;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +14,15 @@ import static nl.hr.core.Person.Type.NURSE;
 
 public class RouteCalculatorService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RouteCalculatorService.class);
+
     public List<Person> findAllNurses(Map<String, Room> rooms) {
         List<Person> nurses = new ArrayList<>();
 
-        rooms.forEach((name, room) -> room.getPeople().stream()
-                .filter(person -> person.getType() == NURSE)
-                .forEach(nurses::add));
+        rooms.forEach((name, room) ->
+                room.getPeople().stream()
+                        .filter(person -> person.getType() == NURSE)
+                        .forEach(nurses::add));
 
         return nurses;
     }
@@ -66,20 +71,20 @@ public class RouteCalculatorService {
 
         Direction direction = room1.getAdjacentRoomDirection().get(room2);
         if (direction != null) {
-            System.out.println("inside if for loop");
+            logger.info("inside if for loop");
             directions.add(direction);
         } else {
-            System.out.println("inside else");
+            logger.info("inside else");
             for (Room adjacentRoom : room1.getAdjacentRooms().values()) {
                 direction = room1.getAdjacentRoomDirection().get(adjacentRoom);
                 directions.add(direction);
 
-                System.out.println("inside else for loop");
+                logger.info("inside else for loop");
                 directions.addAll(roomToRoomDirection(adjacentRoom, room2));
             }
         }
 
-        System.out.println("end of line");
+        logger.info("end of line");
         return directions;
     }
 

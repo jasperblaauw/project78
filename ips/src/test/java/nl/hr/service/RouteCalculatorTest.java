@@ -1,6 +1,8 @@
-package nl.hr.core;
+package nl.hr.service;
 
-import nl.hr.service.RouteCalculatorService;
+import nl.hr.core.Direction;
+import nl.hr.core.Person;
+import nl.hr.core.Room;
 import org.junit.Before;
 import org.junit.Test;
 
