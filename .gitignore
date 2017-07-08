@@ -1,6 +1,4 @@
-
+#InteliJ
 *.iml
-
-*.class
-
 ips/target/
+ips/.idea

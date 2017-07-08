@@ -1,15 +1,14 @@
 package nl.hr.service;
 
+import static nl.hr.core.Person.Type.ELDERLY;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
 import nl.hr.core.Person;
 import nl.hr.core.Room;
 import org.junit.Before;
 import org.junit.Test;
 
-import static nl.hr.core.Person.Type.ELDERLY;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
-//@Service
 public class PersonMoverServiceTest {
 
     private PersonMoverService personMoverService;
